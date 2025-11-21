@@ -1,3 +1,6 @@
+<img width="1920" height="1080" alt="Screenshot (320)" src="https://github.com/user-attachments/assets/daab09f6-8769-4e0b-8d9d-8f37c333c0ca" />
+<img width="1920" height="1080" alt="Screenshot (321)" src="https://github.com/user-attachments/assets/233edb66-a998-4615-9bd4-85f39baf8fbd" />
+<img width="1920" height="1080" alt="Screenshot (322)" src="https://github.com/user-attachments/assets/b9948454-658e-4e13-984e-2767626cd52a" />
 # WESOURCEU — PDF Rule-Based Data Extraction with LLaMA & Node.js
 
 A small Node.js service that accepts a PDF, extracts text, applies rule-based validations, and returns structured JSON produced by a local LLM (LLaMA via Ollama or an API). Useful for resume parsing, certificate checks, compliance rules, and other document verification tasks.
