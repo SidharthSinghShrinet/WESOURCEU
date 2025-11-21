@@ -1,42 +1,48 @@
-📄 PDF Rule-Based Data Extraction using LLaMA & Node.js
+```markdown
+# 📄 PDF Rule-Based Data Extraction using LLaMA & Node.js
 
 This project allows users to upload a PDF and automatically extract structured information based on predefined validation rules using LLaMA and Natural Language Processing.
 
 It is useful for:
 
-Automated document verification
+- Automated document verification
+- Resume/CV parsing
+- Certificate validation
+- Compliance rule checks
 
-Resume/CV parsing
+## AI-Driven PDF Information Extraction
 
-Certificate validation
+### 🚀 Features
 
-Compliance rule checks
+- ✔ Upload any PDF file
+- ✔ Extract plain text using pdf-parse
+- ✔ Apply rule-based validation dynamically
+- ✔ Use LLaMA (local LLM) to generate structured output
+- ✔ JSON-formatted response for automation
+- ✔ Confidence scoring + reasoning for transparency
 
-AI-Driven PDF Information Extraction
+### 🛠️ Tech Stack
 
-🚀 Features
+| Component     | Technology                      |
+|---------------|---------------------------------|
+| Backend       | Node.js + Express               |
+| File Handling | Multer (memory storage)         |
+| PDF Parsing   | pdf-parse                       |
+| LLM           | LLaMA (via Ollama or API)       |
+| API Format    | JSON                            |
 
-✔ Upload any PDF file
-✔ Extract plain text using pdf-parse
-✔ Apply rule-based validation dynamically
-✔ Use LLaMA (local LLM) to generate structured output
-✔ JSON-formatted response for automation
-✔ Confidence scoring + reasoning for transparency
+## 📦 Installation
 
-🛠️ Tech Stack
-Component	Technology
-Backend	Node.js + Express
-File Handling	Multer (memory storage)
-PDF Parsing	pdf-parse
-LLM	LLaMA (via Ollama or API)
-API Format	JSON
-📦 Installation
 1️⃣ Clone the Repository
+```bash
 git clone https://github.com/<your-username>/<repo-name>.git
 cd <repo-name>
+```
 
 2️⃣ Install Dependencies
+```bash
 npm install
+```
 
 3️⃣ Install & Setup LLaMA (Ollama Required)
 
@@ -46,27 +52,36 @@ Mac/Linux: https://ollama.com/download
 
 Windows (Admin PowerShell):
 
+```
 winget install Ollama.Ollama
-
+```
 
 Then pull the LLaMA model:
 
+```
 ollama pull llama3
+```
 
 ▶️ Run the Server
+```bash
 npm start
-
+```
 
 Server will run at:
 
 http://localhost:5000
 
-🔧 API Endpoints
-POST /upload
-Key	Type	Required
-pdf	File (PDF)	Yes
-rules	Array of text rules	Yes
+## 🔧 API Endpoints
+
+`POST /upload`
+
+| Key   | Type            | Required |
+|-------|-----------------|----------|
+| pdf   | File (PDF)      | Yes      |
+| rules | Array of text rules | Yes  |
+
 Example Frontend Request (FormData)
+```javascript
 const formData = new FormData();
 formData.append("pdf", file);
 formData.append("rules", JSON.stringify(["Extract Name", "Extract DOB"]));
@@ -75,16 +90,17 @@ fetch("http://localhost:5000/upload", {
   method: "POST",
   body: formData
 });
+```
 
-🧠 Prompt Format Used for LLaMA
+## 🧠 Prompt Format Used for LLaMA
 
 The system prompts LLaMA using:
 
 PDF Content → Apply Rules → Output JSON Only
 
-
 Example generated output:
 
+```json
 {
   "extracted": [
     {
@@ -101,8 +117,10 @@ Example generated output:
     }
   ]
 }
+```
 
-📁 Project Structure
+## 📁 Project Structure
+
 📦 project-root
  ┣ 📂 uploads
  ┣ 📂 models
@@ -111,32 +129,26 @@ Example generated output:
  ┣ package.json
  ┗ README.md
 
-🧪 Future Improvements
+## 🧪 Future Improvements
 
-🔹 OCR support for scanned PDFs (via Tesseract.js)
+- 🔹 OCR support for scanned PDFs (via Tesseract.js)
+- 🔹 Rule management dashboard
+- 🔹 Database storage (MongoDB / PostgreSQL)
+- 🔹 Role-based authentication
+- 🔹 Frontend UI for drag-and-drop PDF upload
 
-🔹 Rule management dashboard
-
-🔹 Database storage (MongoDB / PostgreSQL)
-
-🔹 Role-based authentication
-
-🔹 Frontend UI for drag-and-drop PDF upload
-
-🧑‍💻 Contributing
+## 🧑‍💻 Contributing
 
 Pull requests are welcome!
 
-Fork the repo
+- Fork the repo
+- Create a new branch
+- Commit changes
+- Open a PR
 
-Create a new branch
-
-Commit changes
-
-Open a PR
-
-📄 License
+## 📄 License
 
 MIT License — free to use and modify.
 
 ⭐ If you found this useful, give the project a star!
+```
