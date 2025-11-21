@@ -1,90 +1,114 @@
-📄 PDF Rule-Based Data Extraction using LLaMA & Node.js
+# WESOURCEU — PDF Rule-Based Data Extraction with LLaMA & Node.js
 
-This project allows users to upload a PDF and automatically extract structured information based on predefined validation rules using LLaMA and Natural Language Processing.
+A small Node.js service that accepts a PDF, extracts text, applies rule-based validations, and returns structured JSON produced by a local LLM (LLaMA via Ollama or an API). Useful for resume parsing, certificate checks, compliance rules, and other document verification tasks.
 
-It is useful for:
+---
 
-Automated document verification
+## Table of contents
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Quick Start](#quick-start)
+- [API](#api)
+- [Prompt & Output Format](#prompt--output-format)
+- [Project Structure](#project-structure)
+- [Future Improvements](#future-improvements)
+- [Contributing](#contributing)
+- [License](#license)
 
-Resume/CV parsing
+---
 
-Certificate validation
+## Features
+- ✅ Upload any PDF file (memory storage with Multer)
+- ✅ Extract plain text using `pdf-parse`
+- ✅ Apply dynamic rule-based validation
+- ✅ Use LLaMA (local LLM via Ollama) to generate structured output
+- ✅ JSON-formatted response for automation
+- ✅ Confidence scoring and reasoning for transparency
 
-Compliance rule checks
+---
 
-AI-Driven PDF Information Extraction
+## Tech Stack
+| Component     | Technology                         |
+|---------------|------------------------------------|
+| Backend       | Node.js + Express                  |
+| File Handling | Multer (memory storage)            |
+| PDF Parsing   | pdf-parse                          |
+| LLM           | LLaMA (via Ollama or API)          |
+| API Format    | JSON                               |
 
-🚀 Features
+---
 
-✔ Upload any PDF file
-✔ Extract plain text using pdf-parse
-✔ Apply rule-based validation dynamically
-✔ Use LLaMA (local LLM) to generate structured output
-✔ JSON-formatted response for automation
-✔ Confidence scoring + reasoning for transparency
+## Quick Start
 
-🛠️ Tech Stack
-Component	Technology
-Backend	Node.js + Express
-File Handling	Multer (memory storage)
-PDF Parsing	pdf-parse
-LLM	LLaMA (via Ollama or API)
-API Format	JSON
-📦 Installation
-1️⃣ Clone the Repository
-git clone https://github.com/<your-username>/<repo-name>.git
-cd <repo-name>
+1. Clone the repository
+```bash
+git clone https://github.com/SidharthSinghShrinet/WESOURCEU.git
+cd WESOURCEU
+```
 
-2️⃣ Install Dependencies
+2. Install dependencies
+```bash
 npm install
+```
 
-3️⃣ Install & Setup LLaMA (Ollama Required)
-
-Download and install Ollama:
-
-Mac/Linux: https://ollama.com/download
-
-Windows (Admin PowerShell):
-
+3. Install & setup Ollama (optional — only if using local LLaMA)
+- macOS / Linux: https://ollama.com/download
+- Windows (PowerShell as admin):
+```powershell
 winget install Ollama.Ollama
-
-
-Then pull the LLaMA model:
-
+```
+Pull the model:
+```bash
 ollama pull llama3
+```
 
-▶️ Run the Server
+4. Start the server
+```bash
 npm start
+```
 
-
-Server will run at:
-
+Default server URL:
 http://localhost:5000
 
-🔧 API Endpoints
-POST /upload
-Key	Type	Required
-pdf	File (PDF)	Yes
-rules	Array of text rules	Yes
-Example Frontend Request (FormData)
+> Note: If using a hosted LLM API instead of Ollama, set your environment variables or change the LLM client configuration in the code.
+
+---
+
+## API
+
+### POST /upload
+Upload a PDF and a list of text rules. The endpoint returns JSON with extracted values, reasoning, and confidence.
+
+Request
+- Content-Type: multipart/form-data
+- Fields:
+  - `pdf` — File (required) — PDF file to process
+  - `rules` — Array of text rules (required). Send as JSON string.
+
+Example (frontend / Fetch)
+```javascript
 const formData = new FormData();
-formData.append("pdf", file);
-formData.append("rules", JSON.stringify(["Extract Name", "Extract DOB"]));
+formData.append("pdf", fileInput.files[0]); // File
+formData.append("rules", JSON.stringify(["Extract Name", "Extract DOB", "Validate Certificate ID"]));
 
 fetch("http://localhost:5000/upload", {
   method: "POST",
   body: formData
-});
+})
+.then(res => res.json())
+.then(console.log)
+.catch(console.error);
+```
 
-🧠 Prompt Format Used for LLaMA
+Example (curl)
+```bash
+curl -X POST "http://localhost:5000/upload" \
+  -F "pdf=@/path/to/document.pdf" \
+  -F 'rules=["Extract Name","Extract DOB"]'
+```
 
-The system prompts LLaMA using:
-
-PDF Content → Apply Rules → Output JSON Only
-
-
-Example generated output:
-
+Response (example)
+```json
 {
   "extracted": [
     {
@@ -101,42 +125,60 @@ Example generated output:
     }
   ]
 }
+```
 
-📁 Project Structure
-📦 project-root
- ┣ 📂 uploads
- ┣ 📂 models
- ┣ 📂 routes
- ┣ server.js
- ┣ package.json
- ┗ README.md
+---
 
-🧪 Future Improvements
+## Prompt & Output Format
 
-🔹 OCR support for scanned PDFs (via Tesseract.js)
+We pass the PDF-extracted text and the user-supplied rules to the LLM with a concise prompt: apply the rules and return JSON only. Keep the LLM instruction strict to avoid free-text replies.
 
-🔹 Rule management dashboard
+Suggested prompt pattern:
+1. System: You are an extractor. Input: raw PDF text + rules.
+2. Instruction: Apply the rules in order and return a JSON object with fields: rule, result, reasoning, confidence.
+3. Output: JSON only (no extra commentary).
 
-🔹 Database storage (MongoDB / PostgreSQL)
+---
 
-🔹 Role-based authentication
+## Project Structure
+```
+project-root
+├── uploads/          # temporary uploaded files (if used)
+├── models/           # local LLM model configs or helpers
+├── routes/           # express routes (upload handler)
+├── server.js         # app entrypoint
+├── package.json
+└── README.md
+```
 
-🔹 Frontend UI for drag-and-drop PDF upload
+---
 
-🧑‍💻 Contributing
+## Future Improvements
+- 🔹 Add OCR support (Tesseract.js) for scanned PDFs
+- 🔹 Interactive rule-management dashboard
+- 🔹 Persist results to a database (MongoDB / PostgreSQL)
+- 🔹 Role-based authentication & access control
+- 🔹 Frontend UI for drag-and-drop uploads and rule editing
 
-Pull requests are welcome!
+---
 
-Fork the repo
+## Contributing
+Contributions are welcome — please:
+1. Fork the repo
+2. Create a branch (feature/your-feature)
+3. Commit your changes
+4. Open a pull request with a clear description
 
-Create a new branch
+Include tests and update README where applicable.
 
-Commit changes
+---
 
-Open a PR
+## License
+MIT — free to use and modify.
 
-📄 License
+---
 
-MIT License — free to use and modify.
-
-⭐ If you found this useful, give the project a star!
+If you'd like, I can:
+- Add badges (build/lint/license) to the header,
+- Generate a clearer code sample for the server route (Express),
+- Or create a small frontend example (HTML + JS) for uploads. Which would you prefer next?
