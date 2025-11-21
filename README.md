@@ -1,16 +1,142 @@
-# React + Vite
+📄 PDF Rule-Based Data Extraction using LLaMA & Node.js
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project allows users to upload a PDF and automatically extract structured information based on predefined validation rules using LLaMA and Natural Language Processing.
 
-Currently, two official plugins are available:
+It is useful for:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Automated document verification
 
-## React Compiler
+Resume/CV parsing
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Certificate validation
 
-## Expanding the ESLint configuration
+Compliance rule checks
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+AI-Driven PDF Information Extraction
+
+🚀 Features
+
+✔ Upload any PDF file
+✔ Extract plain text using pdf-parse
+✔ Apply rule-based validation dynamically
+✔ Use LLaMA (local LLM) to generate structured output
+✔ JSON-formatted response for automation
+✔ Confidence scoring + reasoning for transparency
+
+🛠️ Tech Stack
+Component	Technology
+Backend	Node.js + Express
+File Handling	Multer (memory storage)
+PDF Parsing	pdf-parse
+LLM	LLaMA (via Ollama or API)
+API Format	JSON
+📦 Installation
+1️⃣ Clone the Repository
+git clone https://github.com/<your-username>/<repo-name>.git
+cd <repo-name>
+
+2️⃣ Install Dependencies
+npm install
+
+3️⃣ Install & Setup LLaMA (Ollama Required)
+
+Download and install Ollama:
+
+Mac/Linux: https://ollama.com/download
+
+Windows (Admin PowerShell):
+
+winget install Ollama.Ollama
+
+
+Then pull the LLaMA model:
+
+ollama pull llama3
+
+▶️ Run the Server
+npm start
+
+
+Server will run at:
+
+http://localhost:5000
+
+🔧 API Endpoints
+POST /upload
+Key	Type	Required
+pdf	File (PDF)	Yes
+rules	Array of text rules	Yes
+Example Frontend Request (FormData)
+const formData = new FormData();
+formData.append("pdf", file);
+formData.append("rules", JSON.stringify(["Extract Name", "Extract DOB"]));
+
+fetch("http://localhost:5000/upload", {
+  method: "POST",
+  body: formData
+});
+
+🧠 Prompt Format Used for LLaMA
+
+The system prompts LLaMA using:
+
+PDF Content → Apply Rules → Output JSON Only
+
+
+Example generated output:
+
+{
+  "extracted": [
+    {
+      "rule": "Extract Name",
+      "result": "Rohan Singh",
+      "reasoning": "Matched text: 'Name: Rohan Singh'",
+      "confidence": 95
+    },
+    {
+      "rule": "Extract DOB",
+      "result": "12/03/2002",
+      "reasoning": "Found pattern DD/MM/YYYY near 'DOB'",
+      "confidence": 92
+    }
+  ]
+}
+
+📁 Project Structure
+📦 project-root
+ ┣ 📂 uploads
+ ┣ 📂 models
+ ┣ 📂 routes
+ ┣ server.js
+ ┣ package.json
+ ┗ README.md
+
+🧪 Future Improvements
+
+🔹 OCR support for scanned PDFs (via Tesseract.js)
+
+🔹 Rule management dashboard
+
+🔹 Database storage (MongoDB / PostgreSQL)
+
+🔹 Role-based authentication
+
+🔹 Frontend UI for drag-and-drop PDF upload
+
+🧑‍💻 Contributing
+
+Pull requests are welcome!
+
+Fork the repo
+
+Create a new branch
+
+Commit changes
+
+Open a PR
+
+📄 License
+
+MIT License — free to use and modify.
+
+⭐ If you found this useful, give the project a star!
